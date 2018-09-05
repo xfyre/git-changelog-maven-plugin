@@ -15,7 +15,7 @@
  *
  */
 
-package info.plichta.maven.plugins.changelog;
+package com.xfyre.maven.plugins.changelog;
 
 import org.eclipse.jgit.revwalk.RevCommit;
 

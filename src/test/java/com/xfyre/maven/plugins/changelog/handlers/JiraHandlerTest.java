@@ -15,12 +15,9 @@
  *
  */
 
-package info.plichta.maven.plugins.changelog.handlers;
+package com.xfyre.maven.plugins.changelog.handlers;
 
-import info.plichta.maven.plugins.changelog.handlers.JiraHandler.JiraIssue;
-import info.plichta.maven.plugins.changelog.handlers.JiraHandler.JiraLink;
-import info.plichta.maven.plugins.changelog.handlers.JiraHandler.TitleToken;
-import info.plichta.maven.plugins.changelog.model.CommitWrapper;
+import com.xfyre.maven.plugins.changelog.model.CommitWrapper;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.junit.RepositoryTestCase;
@@ -37,6 +34,7 @@ import static org.junit.Assert.assertThat;
 public class JiraHandlerTest extends RepositoryTestCase {
 
     private static final String SERVER = "server";
+    private static final String COMMIT_PREFIX = "/commit";
     private JiraHandler handler;
 
     @Override
@@ -49,16 +47,17 @@ public class JiraHandlerTest extends RepositoryTestCase {
     public void test() throws GitAPIException {
         try (Git git = new Git(db)) {
             final RevCommit commit = git.commit().setMessage("This is commit with JIRA-1234 issue").call();
-            final CommitWrapper wrapper = new CommitWrapper(commit, SERVER);
+            final CommitWrapper wrapper = new CommitWrapper(commit, SERVER, COMMIT_PREFIX);
             handler.handle(wrapper);
-            final JiraIssue issue = new JiraIssue();
-            issue.getTitle().add(new TitleToken("This is commit with ", null));
-            issue.getTitle().add(new TitleToken("JIRA-1234", new JiraLink("JIRA-1234", SERVER + "/browse/JIRA-1234")));
-            issue.getTitle().add(new TitleToken(" issue", null));
+            final JiraHandler.JiraIssue issue = new JiraHandler.JiraIssue();
+            issue.getTitle().add(new JiraHandler.TitleToken("This is commit with ", null));
+            issue.getTitle().add(new JiraHandler.TitleToken("JIRA-1234", new JiraHandler.JiraLink("JIRA-1234", SERVER + "/browse/JIRA-1234")));
+            issue.getTitle().add(new JiraHandler.TitleToken(" issue", null));
 
             assertThat(wrapper.getTitle(), is("This is commit with JIRA-1234 issue"));
             assertThat(wrapper.getExtensions(), hasKey("jira"));
             assertThat(wrapper.getExtensions(), hasValue(sameBeanAs(issue)));
+            assertThat(wrapper.getCommitLink(), is(SERVER + "/commit/" + commit.getName()));
         }
     }
 
@@ -66,10 +65,11 @@ public class JiraHandlerTest extends RepositoryTestCase {
     public void testNoJira() throws GitAPIException {
         try (Git git = new Git(db)) {
             final RevCommit commit = git.commit().setMessage("Ordinary commit").call();
-            final CommitWrapper wrapper = new CommitWrapper(commit, SERVER);
+            final CommitWrapper wrapper = new CommitWrapper(commit, SERVER, COMMIT_PREFIX);
             handler.handle(wrapper);
             assertThat(wrapper.getTitle(), is("Ordinary commit"));
             assertThat(wrapper.getExtensions(), not(hasKey("jira")));
+            assertThat(wrapper.getCommitLink(), is(SERVER + "/commit/" + commit.getName()));
         }
     }
 

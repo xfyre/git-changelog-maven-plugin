@@ -15,13 +15,13 @@
  *
  */
 
-package info.plichta.maven.plugins.changelog;
+package com.xfyre.maven.plugins.changelog;
 
-import info.plichta.maven.plugins.changelog.handlers.CommitHandler;
-import info.plichta.maven.plugins.changelog.handlers.JiraHandler;
-import info.plichta.maven.plugins.changelog.handlers.PullRequestHandler;
-import info.plichta.maven.plugins.changelog.model.ChangeLog;
-import info.plichta.maven.plugins.changelog.model.TagWrapper;
+import com.xfyre.maven.plugins.changelog.model.ChangeLog;
+import com.xfyre.maven.plugins.changelog.model.TagWrapper;
+import com.xfyre.maven.plugins.changelog.handlers.CommitHandler;
+import com.xfyre.maven.plugins.changelog.handlers.JiraHandler;
+import com.xfyre.maven.plugins.changelog.handlers.PullRequestHandler;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -58,8 +58,11 @@ public class ChangeLogMojo extends AbstractMojo {
     @Parameter(defaultValue = "^\\[maven-release-plugin\\].*")
     private String excludeCommits;
 
-    @Parameter
-    private String gitHubUrl;
+    @Parameter(required = true)
+    private String repositoryUrl;
+
+    @Parameter(defaultValue = "/commit/")
+    private String commitPrefix;
 
     @Parameter(property = "project.version")
     private String nextRelease;
@@ -100,14 +103,14 @@ public class ChangeLogMojo extends AbstractMojo {
         final CommitFilter commitFilter = new CommitFilter(includeCommits, excludeCommits, ignoreOlderThen);
 
         final List<CommitHandler> commitHandlers = new ArrayList<>();
-        if (gitHubUrl != null) {
-            commitHandlers.add(new PullRequestHandler(gitHubUrl));
+        if (repositoryUrl != null) {
+            commitHandlers.add(new PullRequestHandler(repositoryUrl));
         }
         if (jiraServer != null) {
             commitHandlers.add(new JiraHandler(jiraServer));
         }
-        final RepositoryProcessor repositoryProcessor = new RepositoryProcessor(deduplicateChildCommits, toRef, nextRelease, gitHubUrl,
-                commitFilter, commitHandlers, pathFilter, tagPrefix, getLog());
+        final RepositoryProcessor repositoryProcessor = new RepositoryProcessor(deduplicateChildCommits, toRef, nextRelease, repositoryUrl,
+                commitPrefix, commitFilter, commitHandlers, pathFilter, tagPrefix, getLog());
 
         final List<TagWrapper> tags;
         try {

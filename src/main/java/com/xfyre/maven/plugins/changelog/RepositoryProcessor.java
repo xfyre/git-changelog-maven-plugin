@@ -15,11 +15,11 @@
  *
  */
 
-package info.plichta.maven.plugins.changelog;
+package com.xfyre.maven.plugins.changelog;
 
-import info.plichta.maven.plugins.changelog.handlers.CommitHandler;
-import info.plichta.maven.plugins.changelog.model.CommitWrapper;
-import info.plichta.maven.plugins.changelog.model.TagWrapper;
+import com.xfyre.maven.plugins.changelog.model.TagWrapper;
+import com.xfyre.maven.plugins.changelog.handlers.CommitHandler;
+import com.xfyre.maven.plugins.changelog.model.CommitWrapper;
 import org.apache.maven.plugin.logging.Log;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
@@ -58,18 +58,21 @@ public class RepositoryProcessor {
     private final boolean deduplicateChildCommits;
     private final String toRef;
     private final String nextRelease;
-    private final String gitHubUrl;
+    private final String repositoryUrl;
     private final Predicate<RevCommit> commitFilter;
     private final List<CommitHandler> commitHandlers = new ArrayList<>();
     private final TreeFilter pathFilter;
+    private final String commitPrefix;
 
-    public RepositoryProcessor(boolean deduplicateChildCommits, String toRef, String nextRelease, String gitHubUrl,
+    public RepositoryProcessor(boolean deduplicateChildCommits, String toRef, String nextRelease,
+                               String repositoryUrl, String commitPrefix,
                                Predicate<RevCommit> commitFilter, List<CommitHandler> commitHandlers, String pathFilter,
                                String tagPrefix, Log log) {
         this.deduplicateChildCommits = deduplicateChildCommits;
         this.toRef = toRef;
         this.nextRelease = nextRelease;
-        this.gitHubUrl = gitHubUrl;
+        this.repositoryUrl = repositoryUrl;
+        this.commitPrefix = commitPrefix;
         this.commitFilter = commitFilter;
         if (!isBlank(pathFilter) && !"/".equals(pathFilter)) {
             this.pathFilter = PathFilter.create(pathFilter);
@@ -173,7 +176,7 @@ public class RepositoryProcessor {
     }
 
     private CommitWrapper processCommit(RevCommit commit) {
-        final CommitWrapper commitWrapper = new CommitWrapper(commit, gitHubUrl);
+        final CommitWrapper commitWrapper = new CommitWrapper(commit, repositoryUrl, commitPrefix);
         for (CommitHandler listener : commitHandlers) {
             listener.handle(commitWrapper);
         }

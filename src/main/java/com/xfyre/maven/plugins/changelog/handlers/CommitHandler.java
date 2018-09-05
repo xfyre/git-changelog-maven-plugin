@@ -15,27 +15,20 @@
  *
  */
 
-package info.plichta.maven.plugins.changelog.model;
+package com.xfyre.maven.plugins.changelog.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.xfyre.maven.plugins.changelog.model.CommitWrapper;
 
 /**
- * Model class representing GIT tag. Contains references to all commits that belong to this tag.
+ * {@link CommitHandler} is responsible for processing GIT commits. Its implementation may change {@link CommitWrapper}
+ * data and add any additional ones.
  */
-public class TagWrapper {
-    private final String name;
-    private final List<CommitWrapper> commits = new ArrayList<>();
+public interface CommitHandler {
 
-    public TagWrapper(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<CommitWrapper> getCommits() {
-        return commits;
-    }
+    /**
+     * Takes provided commit, processes its information and enhances it.
+     *
+     * @param commit commit to be processed
+     */
+    void handle(CommitWrapper commit);
 }

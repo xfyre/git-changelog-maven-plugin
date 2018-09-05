@@ -15,7 +15,7 @@
  *
  */
 
-package info.plichta.maven.plugins.changelog.model;
+package com.xfyre.maven.plugins.changelog.model;
 
 import org.eclipse.jgit.revwalk.RevCommit;
 
@@ -27,8 +27,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.String.join;
 import static org.apache.commons.lang3.StringUtils.left;
 import static org.apache.commons.lang3.StringUtils.stripEnd;
+import static org.apache.commons.lang3.StringUtils.stripStart;
 
 /**
  * Model class representing one GIT commit.
@@ -36,16 +38,19 @@ import static org.apache.commons.lang3.StringUtils.stripEnd;
 public class CommitWrapper {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final long MILLISECONDS = 1000L;
+    private static final String SEPARATOR = "/";
 
-    private final String gitHubUrl;
+    private final String repositoryUrl;
     private final RevCommit commit;
+    private final String commitPrefix;
     private String title;
 
     private final Map<String, Object> extensions = new HashMap<>();
     private final List<CommitWrapper> children = new ArrayList<>();
 
-    public CommitWrapper(RevCommit commit, String gitHubUrl) {
-        this.gitHubUrl = gitHubUrl;
+    public CommitWrapper(RevCommit commit, String repositoryUrl, String commitPrefix) {
+        this.repositoryUrl = repositoryUrl;
+        this.commitPrefix = commitPrefix;
         this.commit = commit;
         this.title = commit.getShortMessage();
     }
@@ -67,7 +72,10 @@ public class CommitWrapper {
     }
 
     public String getCommitLink() {
-        return stripEnd(gitHubUrl, "/") + "/commit/" + commit.getName();
+        return join(SEPARATOR,
+                stripEnd(repositoryUrl, SEPARATOR),
+                stripEnd(stripStart(commitPrefix, SEPARATOR), SEPARATOR),
+                commit.getName());
     }
 
     public List<CommitWrapper> getChildren() {

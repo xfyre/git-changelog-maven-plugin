@@ -1,6 +1,9 @@
 # git-changelog-maven-plugin
 
-[![Build Status](https://travis-ci.org/jakubplichta/git-changelog-maven-plugin.svg?branch=master)](https://travis-ci.org/jakubplichta/git-changelog-maven-plugin) [![Coverage Status](https://coveralls.io/repos/jakubplichta/git-changelog-maven-plugin/badge.svg?branch=master)](https://coveralls.io/r/jakubplichta/git-changelog-maven-plugin?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/info.plichta.maven.plugins/git-changelog-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/info.plichta.maven.plugins/git-changelog-maven-plugin)
+## Note
+
+Originally forked from [git-changelog-maven-plugin](https://github.com/jakubplichta/git-changelog-maven-plugin), to
+accommodate changes necessary to properly generate changelogs in BitBucket environment.
 
 ## Introduction
 
@@ -15,13 +18,13 @@ The _git-changelog-maven-plugin_ is available in Maven Central Repository, to us
 
 ```xml
 <plugin>
-    <groupId>info.plichta.maven.plugins</groupId>
+    <groupId>com.xfyre.maven.plugins</groupId>
     <artifactId>git-changelog-maven-plugin</artifactId>
-    <version>0.4.0</version>
+    <version>0.4.1</version>
 </plugin>
 ```
 
-See [releases page](https://github.com/jakubplichta/git-changelog-maven-plugin/releases) for information about versions
+See [releases page](https://github.com/xfyre/git-changelog-maven-plugin/releases) for information about versions
 and notable changes.
 
 ### Configuration parameters
@@ -58,7 +61,7 @@ Following configuration parameters are supported by the _git-changelog-maven-plu
 **jiraServer**, _optional_
 * Jira server URL to be used. If present commit messages containing issue references are extended with ticket details.  
 
-**gitHubUrl**, _optional_
+**repositoryUrl**, _optional_
 * GitHub repository URL to be used. If present commit messages containing GitHub pull request references are extended
 with relevant details.
 

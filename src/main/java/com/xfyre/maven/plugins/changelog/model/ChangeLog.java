@@ -15,7 +15,7 @@
  *
  */
 
-package info.plichta.maven.plugins.changelog.model;
+package com.xfyre.maven.plugins.changelog.model;
 
 import java.util.List;
 

@@ -15,9 +15,9 @@
  *
  */
 
-package info.plichta.maven.plugins.changelog.handlers;
+package com.xfyre.maven.plugins.changelog.handlers;
 
-import info.plichta.maven.plugins.changelog.model.CommitWrapper;
+import com.xfyre.maven.plugins.changelog.model.CommitWrapper;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,10 +29,10 @@ import static org.apache.commons.lang3.StringUtils.stripEnd;
  */
 public class PullRequestHandler implements CommitHandler {
     private static final Pattern PATTERN = Pattern.compile("Merge pull request #(\\d+).*");
-    private final String gitHubUrl;
+    private final String repositoryUrl;
 
-    public PullRequestHandler(String gitHubUrl) {
-        this.gitHubUrl = gitHubUrl;
+    public PullRequestHandler(String repositoryUrl) {
+        this.repositoryUrl = repositoryUrl;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class PullRequestHandler implements CommitHandler {
 
             commit.setTitle(title);
             final String id = matcher.group(1);
-            commit.getExtensions().put("pullRequest", new PullRequest(id, title, stripEnd(gitHubUrl, "/") + "/pull/" + id));
+            commit.getExtensions().put("pullRequest", new PullRequest(id, title, stripEnd(repositoryUrl, "/") + "/pull/" + id));
         }
     }
 

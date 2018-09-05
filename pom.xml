@@ -19,13 +19,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>info.plichta.maven.plugins</groupId>
+    <groupId>com.xfyre.maven.plugins</groupId>
     <artifactId>git-changelog-maven-plugin</artifactId>
     <version>0.4.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
     <name>${project.artifactId}</name>
     <description>git changelog plugin</description>
-    <url>https://github.com/jakubplichta/git-changelog-maven-plugin</url>
+    <url>https://github.com/xfyre/git-changelog-maven-plugin</url>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
@@ -34,8 +34,8 @@
     </parent>
 
     <scm>
-        <url>https://github.com/jakubplichta/git-changelog-maven-plugin</url>
-        <connection>scm:git:git@github.com:jakubplichta/git-changelog-maven-plugin.git</connection>
+        <url>https://github.com/xfyre/git-changelog-maven-plugin</url>
+        <connection>scm:git:git@github.com:xfyre/git-changelog-maven-plugin.git</connection>
         <developerConnection>scm:git:${basedir}</developerConnection>
         <tag>HEAD</tag>
     </scm>
@@ -49,8 +49,8 @@
 
     <developers>
         <developer>
-            <name>Jakub Plichta</name>
-            <email>jakub.plichta@gmail.com</email>
+            <name>Ilya Obshadko</name>
+            <email>xfyre@xfyre.com</email>
         </developer>
     </developers>
 
@@ -169,14 +169,14 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Name>info/plichta/maven/plugins</Name>
+                            <Name>com/xfyre/maven/plugins</Name>
                             <Specification-Title>${project.description}</Specification-Title>
                             <Specification-Version>${project.version}</Specification-Version>
-                            <Specification-Vendor>info.plichta</Specification-Vendor>
+                            <Specification-Vendor>com.xfyre</Specification-Vendor>
                             <Implementation-Title>${project.description}</Implementation-Title>
                             <Implementation-Version>${project.version}</Implementation-Version>
-                            <Implementation-Vendor>info.plichta</Implementation-Vendor>
-                            <Implementation-Vendor-Id>info.plichta</Implementation-Vendor-Id>
+                            <Implementation-Vendor>com.xfyre</Implementation-Vendor>
+                            <Implementation-Vendor-Id>com.xfyre</Implementation-Vendor-Id>
                         </manifestEntries>
                     </archive>
                 </configuration>
@@ -189,11 +189,11 @@
                 <!--</configuration>-->
             <!--</plugin>-->
             <plugin>
-                <groupId>info.plichta.maven.plugins</groupId>
+                <groupId>com.xfyre.maven.plugins</groupId>
                 <artifactId>git-changelog-maven-plugin</artifactId>
                 <version>${project.version}</version>
                 <configuration>
-                    <gitHubUrl>${project.scm.url}</gitHubUrl>
+                    <repositoryUrl>${project.scm.url}</repositoryUrl>
                 </configuration>
             </plugin>
             <plugin>

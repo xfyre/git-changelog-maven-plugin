@@ -15,10 +15,10 @@
  *
  */
 
-package info.plichta.maven.plugins.changelog;
+package com.xfyre.maven.plugins.changelog;
 
-import info.plichta.maven.plugins.changelog.model.CommitWrapper;
-import info.plichta.maven.plugins.changelog.model.TagWrapper;
+import com.xfyre.maven.plugins.changelog.model.CommitWrapper;
+import com.xfyre.maven.plugins.changelog.model.TagWrapper;
 import org.apache.maven.plugin.logging.Log;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.MergeCommand.FastForwardMode;
@@ -60,7 +60,7 @@ public class RepositoryProcessorTest extends RepositoryTestCase {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        processor = new RepositoryProcessor(false, "HEAD", NEXT_VERSION, "gitHubUrl",
+        processor = new RepositoryProcessor(false, "HEAD", NEXT_VERSION, "repositoryUrl", "/commit/",
                 commit -> true, emptyList(), "/", TAG_PREFIX, mock(Log.class));
     }
 

@@ -15,11 +15,11 @@
  *
  */
 
-package info.plichta.maven.plugins.changelog;
+package com.xfyre.maven.plugins.changelog;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
-import info.plichta.maven.plugins.changelog.model.ChangeLog;
+import com.xfyre.maven.plugins.changelog.model.ChangeLog;
 import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;

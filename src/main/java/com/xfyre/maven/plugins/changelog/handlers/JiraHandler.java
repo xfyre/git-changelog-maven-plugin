@@ -15,9 +15,9 @@
  *
  */
 
-package info.plichta.maven.plugins.changelog.handlers;
+package com.xfyre.maven.plugins.changelog.handlers;
 
-import info.plichta.maven.plugins.changelog.model.CommitWrapper;
+import com.xfyre.maven.plugins.changelog.model.CommitWrapper;
 
 import java.util.ArrayList;
 import java.util.List;

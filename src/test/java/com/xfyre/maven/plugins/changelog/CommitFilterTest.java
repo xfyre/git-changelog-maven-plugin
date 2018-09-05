@@ -15,7 +15,7 @@
  *
  */
 
-package info.plichta.maven.plugins.changelog;
+package com.xfyre.maven.plugins.changelog;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.junit.RepositoryTestCase;
@@ -32,6 +32,9 @@ public class CommitFilterTest extends RepositoryTestCase {
 
     private RevCommit commit;
     private RevCommit commit2;
+    private RevCommit commit3;
+    private RevCommit commit4;
+    private RevCommit commit5;
 
     @Before
     public void setUp() throws Exception {
@@ -39,7 +42,9 @@ public class CommitFilterTest extends RepositoryTestCase {
         try (Git git = new Git(db)) {
             commit = git.commit().setMessage("Commit").call();
             commit2 = git.commit().setMessage("Test").call();
-
+            commit3 = git.commit().setMessage("bugnull: [maven-release-plugin] Update CHANGELOG.md").call();
+            commit4 = git.commit().setMessage("[maven-release-plugin] prepare release v1.2.1").call();
+            commit5 = git.commit().setMessage("[maven-release-plugin] prepare for next development iteration [skip ci]").call();
         }
     }
 
@@ -83,5 +88,15 @@ public class CommitFilterTest extends RepositoryTestCase {
         final CommitFilter filter = new CommitFilter(".*", null, LocalDateTime.of(2000, 12, 1, 0, 0));
         assertThat(filter.test(commit), is(true));
         assertThat(filter.test(commit2), is(true));
+    }
+
+    @Test
+    public void testExcludeByRegex() {
+        final CommitFilter filter = new CommitFilter(".*",
+                "^.*(\\[maven-release-plugin\\]|prepare release|prepare for next development iteration).*",
+                null);
+        assertThat(filter.test(commit3), is(false));
+        assertThat(filter.test(commit4), is(false));
+        assertThat(filter.test(commit5), is(false));
     }
 }

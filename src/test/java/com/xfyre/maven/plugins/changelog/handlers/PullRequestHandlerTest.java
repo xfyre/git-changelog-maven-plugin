@@ -15,10 +15,9 @@
  *
  */
 
-package info.plichta.maven.plugins.changelog.handlers;
+package com.xfyre.maven.plugins.changelog.handlers;
 
-import info.plichta.maven.plugins.changelog.handlers.PullRequestHandler.PullRequest;
-import info.plichta.maven.plugins.changelog.model.CommitWrapper;
+import com.xfyre.maven.plugins.changelog.model.CommitWrapper;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.junit.RepositoryTestCase;
@@ -35,6 +34,7 @@ import static org.junit.Assert.assertThat;
 public class PullRequestHandlerTest extends RepositoryTestCase {
 
     private static final String SERVER = "server";
+    private static final String COMMIT_PREFIX = "/commit/";
     private PullRequestHandler handler;
 
     @Override
@@ -47,11 +47,11 @@ public class PullRequestHandlerTest extends RepositoryTestCase {
     public void test() throws GitAPIException {
         try (Git git = new Git(db)) {
             final RevCommit commit = git.commit().setMessage("Merge pull request #1\n\nMy First PR").call();
-            final CommitWrapper wrapper = new CommitWrapper(commit, SERVER);
+            final CommitWrapper wrapper = new CommitWrapper(commit, SERVER, COMMIT_PREFIX);
             handler.handle(wrapper);
             assertThat(wrapper.getTitle(), is("My First PR"));
             assertThat(wrapper.getExtensions(), hasKey("pullRequest"));
-            assertThat(wrapper.getExtensions(), hasValue(samePropertyValuesAs(new PullRequest("1", "My First PR", SERVER + "/pull/1"))));
+            assertThat(wrapper.getExtensions(), hasValue(samePropertyValuesAs(new PullRequestHandler.PullRequest("1", "My First PR", SERVER + "/pull/1"))));
         }
     }
 
@@ -59,7 +59,7 @@ public class PullRequestHandlerTest extends RepositoryTestCase {
     public void testNoPR() throws GitAPIException {
         try (Git git = new Git(db)) {
             final RevCommit commit = git.commit().setMessage("Ordinary commit").call();
-            final CommitWrapper wrapper = new CommitWrapper(commit, SERVER);
+            final CommitWrapper wrapper = new CommitWrapper(commit, SERVER, COMMIT_PREFIX);
             handler.handle(wrapper);
             assertThat(wrapper.getTitle(), is("Ordinary commit"));
             assertThat(wrapper.getExtensions(), not(hasKey("pullRequest")));
