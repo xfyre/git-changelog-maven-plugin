@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/xfyre/git-changelog-maven-plugin.svg?branch=master)](https://travis-ci.org/xfyre/git-changelog-maven-plugin) 
 [![Coverage Status](https://coveralls.io/repos/github/xfyre/git-changelog-maven-plugin/badge.svg?branch=master)](https://coveralls.io/github/xfyre/git-changelog-maven-plugin?branch=master)
-
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.xfyre.maven.plugins/git-changelog-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.xfyre.maven.plugins/git-changelog-maven-plugin)
 
 ## Note
 
