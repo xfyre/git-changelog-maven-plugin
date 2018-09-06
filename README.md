@@ -1,6 +1,8 @@
 # git-changelog-maven-plugin
 
-[![Build Status](https://travis-ci.org/xfyre/git-changelog-maven-plugin.svg?branch=master)](https://travis-ci.org/xfyre/git-changelog-maven-plugin) [![Coverage Status](https://coveralls.io/repos/github/xfyre/git-changelog-maven-plugin/badge.svg?branch=master)](https://coveralls.io/github/xfyre/git-changelog-maven-plugin?branch=master)
+[![Build Status](https://travis-ci.org/xfyre/git-changelog-maven-plugin.svg?branch=master)](https://travis-ci.org/xfyre/git-changelog-maven-plugin) 
+[![Coverage Status](https://coveralls.io/repos/github/xfyre/git-changelog-maven-plugin/badge.svg?branch=master)](https://coveralls.io/github/xfyre/git-changelog-maven-plugin?branch=master)
+
 
 ## Note
 
