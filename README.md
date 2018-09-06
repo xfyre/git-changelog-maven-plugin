@@ -24,7 +24,7 @@ The _git-changelog-maven-plugin_ is available in Maven Central Repository, to us
 <plugin>
     <groupId>com.xfyre.maven.plugins</groupId>
     <artifactId>git-changelog-maven-plugin</artifactId>
-    <version>0.4.1</version>
+    <version>0.4.2</version>
 </plugin>
 ```
 
@@ -68,6 +68,14 @@ Following configuration parameters are supported by the _git-changelog-maven-plu
 **repositoryUrl**, _optional_
 * GitHub repository URL to be used. If present commit messages containing GitHub pull request references are extended
 with relevant details.
+
+**commitPrefix**, _optional_
+* URL path prefix for commit links. Defaults to `/commit/` (which is valid for GitHub), needs to be changed if you
+are using something else (like BitBucket or Stash).
+
+**pullRequestPrefix**, _optional_
+* URL path prefix for pull request links. Defaults to `/pull/` (which is valid for GitHub), needs to be changed if you
+are using something else (like BitBucket or Stash).
 
 **ignoreOlderThen**, _optional_
 * Ignore commits older than date (format: YYYY-MM-dd HH:mm:ss)

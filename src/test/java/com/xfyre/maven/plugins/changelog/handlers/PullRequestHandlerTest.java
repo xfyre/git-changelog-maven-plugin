@@ -35,12 +35,13 @@ public class PullRequestHandlerTest extends RepositoryTestCase {
 
     private static final String SERVER = "server";
     private static final String COMMIT_PREFIX = "/commit/";
+    private static final String PR_PREFIX = "/pull/";
     private PullRequestHandler handler;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        handler = new PullRequestHandler(SERVER);
+        handler = new PullRequestHandler(SERVER, PR_PREFIX);
     }
 
     @Test

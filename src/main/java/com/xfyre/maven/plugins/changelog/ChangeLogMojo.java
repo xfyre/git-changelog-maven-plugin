@@ -64,6 +64,9 @@ public class ChangeLogMojo extends AbstractMojo {
     @Parameter(defaultValue = "/commit/")
     private String commitPrefix;
 
+    @Parameter(defaultValue = "/pull/")
+    private String pullRequestPrefix;
+
     @Parameter(property = "project.version")
     private String nextRelease;
 
@@ -104,7 +107,7 @@ public class ChangeLogMojo extends AbstractMojo {
 
         final List<CommitHandler> commitHandlers = new ArrayList<>();
         if (repositoryUrl != null) {
-            commitHandlers.add(new PullRequestHandler(repositoryUrl));
+            commitHandlers.add(new PullRequestHandler(repositoryUrl, pullRequestPrefix));
         }
         if (jiraServer != null) {
             commitHandlers.add(new JiraHandler(jiraServer));

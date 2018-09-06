@@ -22,17 +22,22 @@ import com.xfyre.maven.plugins.changelog.model.CommitWrapper;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.lang.String.join;
 import static org.apache.commons.lang3.StringUtils.stripEnd;
+import static org.apache.commons.lang3.StringUtils.stripStart;
 
 /**
  * {@link CommitHandler} capable of detecting Pull Request references in commit messages.
  */
 public class PullRequestHandler implements CommitHandler {
+    private static final String SEPARATOR = "/";
     private static final Pattern PATTERN = Pattern.compile("Merge pull request #(\\d+).*");
     private final String repositoryUrl;
+    private final String pullRequestPrefix;
 
-    public PullRequestHandler(String repositoryUrl) {
+    public PullRequestHandler(String repositoryUrl, String pullRequestPrefix) {
         this.repositoryUrl = repositoryUrl;
+        this.pullRequestPrefix = pullRequestPrefix;
     }
 
     @Override
@@ -45,7 +50,12 @@ public class PullRequestHandler implements CommitHandler {
 
             commit.setTitle(title);
             final String id = matcher.group(1);
-            commit.getExtensions().put("pullRequest", new PullRequest(id, title, stripEnd(repositoryUrl, "/") + "/pull/" + id));
+            final String pullRequestLink = join(SEPARATOR,
+                    stripEnd(repositoryUrl, SEPARATOR),
+                    stripEnd(stripStart(pullRequestPrefix, SEPARATOR), SEPARATOR),
+                    id
+            );
+            commit.getExtensions().put("pullRequest", new PullRequest(id, title, pullRequestLink));
         }
     }
 
