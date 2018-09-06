@@ -21,7 +21,7 @@
 
     <groupId>com.xfyre.maven.plugins</groupId>
     <artifactId>git-changelog-maven-plugin</artifactId>
-    <version>0.4.1</version>
+    <version>0.4.2-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
     <name>${project.artifactId}</name>
     <description>git changelog plugin</description>
@@ -37,7 +37,7 @@
         <url>https://github.com/xfyre/git-changelog-maven-plugin</url>
         <connection>scm:git:git@github.com:xfyre/git-changelog-maven-plugin.git</connection>
         <developerConnection>scm:git:${basedir}</developerConnection>
-        <tag>git-changelog-maven-plugin-0.4.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <licenses>
