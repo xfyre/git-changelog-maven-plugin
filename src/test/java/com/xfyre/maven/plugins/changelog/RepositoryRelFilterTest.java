@@ -45,11 +45,11 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class RepositoryProcessorTest extends RepositoryTestCase {
+public class RepositoryRelFilterTest extends RepositoryTestCase {
 
-    private static final String REL_FILTER = "^.+$";
-    private static final String V_1 = "1";
-    private static final String V_2 = "2";
+    private static final String REL_FILTER = "^release.+$";
+    private static final String V_1 = "release1";
+    private static final String V_2 = "release2";
     private static final String V_3 = "3";
     private static final String NEXT_VERSION = "next";
     private static final String MASTER = "master";
@@ -77,8 +77,8 @@ public class RepositoryProcessorTest extends RepositoryTestCase {
             git.tag().setName(V_1).call();
             git.branchCreate().setName("branch").setStartPoint("HEAD").call();
             git.checkout().setName("branch").call();
-            commitWithFile(git, "branch_1");
-            final RevCommit branch = commitWithFile(git, "branch_2");
+            commitWithFile(git, "branch_7");
+            final RevCommit branch = commitWithFile(git, "branch_8");
             git.checkout().setName(MASTER).call();
             git.merge().include(branch).setFastForward(FastForwardMode.NO_FF).setMessage("merge1").call();
             git.tag().setName(V_2).call();
@@ -87,7 +87,7 @@ public class RepositoryProcessorTest extends RepositoryTestCase {
         final List<TagWrapper> tags = processor.process(db);
         assertThat(tags, hasSize(3));
         assertTag(tags.get(0), NEXT_VERSION, emptyMap());
-        assertTag(tags.get(1), V_2, of("merge1", asList("branch_2", "branch_1")));
+        assertTag(tags.get(1), V_2, of("merge1", asList("branch_8", "branch_7")));
         assertTag(tags.get(2), V_1, of("first", emptyList()));
     }
 
@@ -98,24 +98,23 @@ public class RepositoryProcessorTest extends RepositoryTestCase {
             git.tag().setName(V_1).call();
             git.branchCreate().setName("branch").setStartPoint("HEAD").call();
             git.checkout().setName("branch").call();
-            commitWithFile(git, "branch_1");
-            RevCommit branch = commitWithFile(git, "branch_2");
+            commitWithFile(git, "branch_4");
+            RevCommit branch = commitWithFile(git, "branch_5");
             git.checkout().setName(MASTER).call();
             git.merge().include(branch).setFastForward(FastForwardMode.NO_FF).setMessage("merge1").call();
             git.tag().setName(V_2).call();
             git.checkout().setName("branch").call();
-            branch = commitWithFile(git, "branch_3");
+            branch = commitWithFile(git, "branch_6");
             git.checkout().setName(MASTER).call();
             git.merge().include(branch).setFastForward(FastForwardMode.NO_FF).setMessage("merge2").call();
             git.tag().setName(V_3).call();
         }
 
         final List<TagWrapper> tags = processor.process(db);
-        assertThat(tags, hasSize(4));
-        assertTag(tags.get(0), NEXT_VERSION, emptyMap());
-        assertTag(tags.get(1), V_3, of("merge2", singletonList("branch_3")));
-        assertTag(tags.get(2), V_2, of("merge1", asList("branch_2", "branch_1")));
-        assertTag(tags.get(3), V_1, of("first", emptyList()));
+        assertThat(tags, hasSize(3));
+        assertTag(tags.get(0), NEXT_VERSION, of("merge2", singletonList("branch_6")));
+        assertTag(tags.get(1), V_2, of("merge1", asList("branch_5", "branch_4")));
+        assertTag(tags.get(2), V_1, of("first", emptyList()));
     }
 
     private RevCommit commitWithFile(Git git, String commit) throws IOException, GitAPIException {

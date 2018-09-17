@@ -82,8 +82,8 @@ public class ChangeLogMojo extends AbstractMojo {
     @Parameter(defaultValue = "")
     private String pathFilter;
 
-    @Parameter(property = "project.artifactId")
-    private String tagPrefix;
+    @Parameter(defaultValue = "^.+$")
+    private String releaseTagFilter;
 
     @Parameter
     private LocalDateTime ignoreOlderThen;
@@ -113,7 +113,7 @@ public class ChangeLogMojo extends AbstractMojo {
             commitHandlers.add(new JiraHandler(jiraServer));
         }
         final RepositoryProcessor repositoryProcessor = new RepositoryProcessor(deduplicateChildCommits, toRef, nextRelease, repositoryUrl,
-                commitPrefix, commitFilter, commitHandlers, pathFilter, tagPrefix, getLog());
+                commitPrefix, commitFilter, commitHandlers, pathFilter, releaseTagFilter, getLog());
 
         final List<TagWrapper> tags;
         try {

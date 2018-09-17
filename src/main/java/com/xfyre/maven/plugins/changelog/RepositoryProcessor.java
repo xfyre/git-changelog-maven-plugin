@@ -67,7 +67,7 @@ public class RepositoryProcessor {
     public RepositoryProcessor(boolean deduplicateChildCommits, String toRef, String nextRelease,
                                String repositoryUrl, String commitPrefix,
                                Predicate<RevCommit> commitFilter, List<CommitHandler> commitHandlers, String pathFilter,
-                               String tagPrefix, Log log) {
+                               String releaseTagFilter, Log log) {
         this.deduplicateChildCommits = deduplicateChildCommits;
         this.toRef = toRef;
         this.nextRelease = nextRelease;
@@ -80,7 +80,7 @@ public class RepositoryProcessor {
             this.pathFilter = PathFilter.ALL;
         }
         this.commitHandlers.addAll(commitHandlers);
-        tagPattern = Pattern.compile(tagPrefix + "-([^-]+?)$");
+        tagPattern = Pattern.compile(releaseTagFilter);
         this.log = log;
     }
 
@@ -145,11 +145,10 @@ public class RepositoryProcessor {
     private Map<ObjectId, TagWrapper> extractTags(Repository repository, RevWalk walk) throws IOException {
         final Map<ObjectId, TagWrapper> tagMapping = new HashMap<>();
         for (Entry<String, Ref> entry : repository.getTags().entrySet()) {
-            String name = entry.getKey();
+            final String name = entry.getKey();
 
             final Matcher matcher = tagPattern.matcher(name);
             if (matcher.matches()) {
-                name = matcher.group(1);
                 tagMapping.put(walk.parseCommit(entry.getValue().getObjectId()), new TagWrapper(name));
             }
         }
