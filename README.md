@@ -24,7 +24,7 @@ The _git-changelog-maven-plugin_ is available in Maven Central Repository, to us
 <plugin>
     <groupId>com.xfyre.maven.plugins</groupId>
     <artifactId>git-changelog-maven-plugin</artifactId>
-    <version>0.4.2</version>
+    <version>0.4.3</version>
 </plugin>
 ```
 
